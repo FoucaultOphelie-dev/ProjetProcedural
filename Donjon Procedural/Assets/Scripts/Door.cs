@@ -11,8 +11,16 @@ public class Door : MonoBehaviour {
         WALL = 2,
         SECRET = 3,
     }
+    public enum LEVEL_OF_OBLIGATION
+    {
+        ABSENTE=1,
+        FACULTATIVE=2,
+        OBLIGATOIRE=4,
+    }
 
     public const string PLAYER_NAME = "Player";
+
+    public LEVEL_OF_OBLIGATION obligations = LEVEL_OF_OBLIGATION.FACULTATIVE;
 
     Utils.ORIENTATION _orientation = Utils.ORIENTATION.NONE;
 	public Utils.ORIENTATION Orientation { get { return _orientation; } }
