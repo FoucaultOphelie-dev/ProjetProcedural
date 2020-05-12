@@ -10,6 +10,9 @@ public class GraphViewer : MonoBehaviour
     [HideInInspector] public Noeud[] currentGraph = null;
     public bool everyFrame;
 
+    private int gridWidth = 0;
+    private int gridHeight = 0;
+
     private void OnDrawGizmos()
     {
         if (currentGraph == null) return;
@@ -88,7 +91,8 @@ public class GraphViewer : MonoBehaviour
         do
         {
             Debug.Log("Generate");
-            currentGraph = GraphGenerationTool.GenerateGraph(currentSetting);
+            currentGraph = GraphGenerationTool.GenerateGraph(currentSetting, ref gridWidth, ref gridHeight);
+            Camera.main.transform.position = new Vector3(gridWidth / 2, gridHeight / 2, -10);
             i++;
         } while (currentGraph == null && i < iterationMax);
         if (currentGraph == null)

@@ -14,11 +14,13 @@ public static class GraphGenerationTool
     private static int[,] grid = null;
     private static int gridWidth = -1;
     private static int gridHeight = -1;
-    public static Noeud[] GenerateGraph(GraphSetting setting)
+    public static Noeud[] GenerateGraph(GraphSetting setting, ref int gridWidth, ref int gridHeight)
     {
         nodes = new List<Noeud>();
-        gridWidth = Random.Range(setting.gridWidth.x, setting.gridWidth.y+1);
-        gridHeight = Random.Range(setting.gridHeight.x, setting.gridHeight.y+1);
+        GraphGenerationTool.gridWidth = Random.Range(setting.gridWidth.x, setting.gridWidth.y+1);
+        GraphGenerationTool.gridHeight = Random.Range(setting.gridHeight.x, setting.gridHeight.y+1);
+        gridWidth = GraphGenerationTool.gridWidth;
+        gridHeight = GraphGenerationTool.gridHeight;
         grid = new int[gridWidth, gridHeight];
         //Create Root Node
         Vector2Int pos = new Vector2Int(gridWidth/2, gridHeight/2);
