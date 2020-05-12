@@ -7,6 +7,7 @@ public struct NeighbourNode
 {
     public Vector2Int position;
     public int score;
+    public bool[] access;
 }
 public static class GraphGenerationTool
 {
@@ -26,7 +27,6 @@ public static class GraphGenerationTool
         Vector2Int pos = new Vector2Int(gridWidth/2, gridHeight/2);
         Noeud rootNode = new Noeud(pos, Noeud.TYPE_DE_NOEUD.START);
         // Create new node
-        Debug.Log(pos);
         grid[pos.x, pos.y] = 0;
         nodes.Add(rootNode);
 
@@ -52,58 +52,56 @@ public static class GraphGenerationTool
     private static void GenerateSecretNode(int secretNodeCount)
     {
         //init 
+        Vector2Int[] neighBours = new Vector2Int[] { new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(0, -1) };
         int[,] gridNeighbour = new int[gridWidth, gridHeight];
-
+        bool[,][] gridAccessNeighbour = new bool[gridWidth, gridHeight][];
         List<NeighbourNode> neighbourNodes = new List<NeighbourNode>();
         for (int y = 0; y < gridHeight; y++)
         {
             for (int x = 0; x < gridWidth; x++)
             {
-
                 Vector2Int pos = new Vector2Int(x, y);
-
-                //Right update
-                if (x + 1 < gridWidth)
+                gridAccessNeighbour[x, y] = new bool[4];
+                for (int o = 0; o < neighBours.Length; o++)
                 {
-                    Vector2Int rightNeighBour = pos + new Vector2Int(1, 0);
-                    if (!IsCoordEmpty(rightNeighBour))
-                        gridNeighbour[x, y]++;
+                    if (x + 1 < gridWidth && x - 1 >= 0 && y + 1 < gridHeight && y - 1 >= 0)
+                    {
+                        gridAccessNeighbour[x, y][o] = !IsCoordEmpty(pos + neighBours[o]);
+                        if (gridAccessNeighbour[x, y][o])
+                            gridNeighbour[x, y]++;
+                    }
                 }
-
-                //Left update
-                if (x - 1 >= 0)
-                {
-                    Vector2Int leftNeighBour = pos + new Vector2Int(-1, 0);
-                    if (!IsCoordEmpty(leftNeighBour))
-                        gridNeighbour[x, y]++;
-                }
-
-                //Top update
-                if (y + 1 < gridHeight)
-                {
-                    Vector2Int topNeighBour = pos + new Vector2Int(0, 1);
-                    if (!IsCoordEmpty(topNeighBour))
-                        gridNeighbour[x, y]++;
-                }
-
-                //Bottom update
-                if (y - 1 >= 0)
-                {
-                    Vector2Int bottomNeighBour = pos + new Vector2Int(0, -1);
-                    if (!IsCoordEmpty(bottomNeighBour))
-                        gridNeighbour[x, y]++;
-                }
-                neighbourNodes.Add(new NeighbourNode { position = new Vector2Int(x, y), score = gridNeighbour[x, y] });
+                neighbourNodes.Add(new NeighbourNode { position = new Vector2Int(x, y), score = gridNeighbour[x, y], access = gridAccessNeighbour[x, y] });
             }
         }
 
         neighbourNodes = neighbourNodes.Where(node => IsCoordEmpty(node.position)).OrderByDescending(node => node.score).ToList();
-        for (int i = 0; i < secretNodeCount; i++)
+        int i = 0;
+        int k = 0;
+        while(i < secretNodeCount)
         {
-            Noeud node = new Noeud(neighbourNodes[i].position, Noeud.TYPE_DE_NOEUD.SECRET);
-            grid[neighbourNodes[i].position.x,
-                neighbourNodes[i].position.y] = i;
+            Noeud node = new Noeud(neighbourNodes[k].position, Noeud.TYPE_DE_NOEUD.SECRET);
             nodes.Add(node);
+            grid[neighbourNodes[k].position.x,
+                neighbourNodes[k].position.y] = i;
+            List<int> valideNeighbour = new List<int>();
+            for (int j = 0; j < neighbourNodes[k].access.Length; j++)
+            {
+                if (neighbourNodes[k].access[j])
+                {
+                    int nodeIndex = GetNodeIndexFromPos(neighbourNodes[k].position + neighBours[j]);
+                    if (nodes[nodeIndex].type != Noeud.TYPE_DE_NOEUD.END)
+                        valideNeighbour.Add(nodeIndex);
+                }
+            }
+            if(valideNeighbour.Count > 0)
+            {
+                int selectedIndex = valideNeighbour[Random.Range(0, valideNeighbour.Count)];
+                node.liens.Add(selectedIndex, Noeud.TYPE_DE_LIEN.SECRET);
+                nodes[selectedIndex].liens.Add(nodes.Count - 1, Noeud.TYPE_DE_LIEN.SECRET);
+                i++;
+            }
+            k++;
         }
     }
 

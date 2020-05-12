@@ -7,6 +7,9 @@ public class GraphViewer : MonoBehaviour
 {
     public GraphSetting currentSetting;
     public int iterationMax = 1;
+    [Range(0f,1f)]
+    public float RefreshTime = 0.5f;
+    private float timer = 0f;
     [HideInInspector] public Noeud[] currentGraph = null;
     public bool everyFrame;
 
@@ -56,7 +59,7 @@ public class GraphViewer : MonoBehaviour
                         Gizmos.color = Color.white;
                         break;
                     case Noeud.TYPE_DE_LIEN.SECRET:
-                        Gizmos.color = Color.green;
+                        Gizmos.color = Color.magenta;
                         break;
                     default:
                         break;
@@ -68,8 +71,12 @@ public class GraphViewer : MonoBehaviour
 
     private void Update()
     {
-        if(everyFrame)
+        if(everyFrame && timer >= RefreshTime)
+        {
             GenerateGraph();
+            timer = 0;
+        }
+        timer += Time.deltaTime;
     }
 
     private void OnGUI()
