@@ -33,10 +33,13 @@ public class GraphViewer : MonoBehaviour
                 case Noeud.TYPE_DE_NOEUD.INTERMEDIATE:
                     Gizmos.color = Color.white;
                     break;
+                case Noeud.TYPE_DE_NOEUD.SECRET:
+                    Gizmos.color = Color.magenta;
+                    break;
                 default:
                     break;
             }
-            Gizmos.DrawCube(node.position, new Vector2(0.5f, 0.5f));
+            Gizmos.DrawCube(new Vector3(node.position.x, node.position.y), new Vector2(0.5f, 0.5f));
 
             //Draw Link
             foreach (KeyValuePair<int, Noeud.TYPE_DE_LIEN> lien in node.liens)
@@ -55,7 +58,7 @@ public class GraphViewer : MonoBehaviour
                     default:
                         break;
                 }
-                Gizmos.DrawLine(node.position, currentGraph[lien.Key].position);
+                Gizmos.DrawLine(new Vector3(node.position.x, node.position.y), new Vector3(currentGraph[lien.Key].position.x, currentGraph[lien.Key].position.y));
             }
         }
     }

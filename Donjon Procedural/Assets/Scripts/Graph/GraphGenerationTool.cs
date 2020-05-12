@@ -1,43 +1,111 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class GraphGenerationTool
+public struct NeighbourNode
 {
+    public Vector2Int position;
+    public int score;
+}
+public static class GraphGenerationTool
+{
+    private static List<Noeud> nodes = new List<Noeud>();
+    private static int[,] grid = null;
+    private static int gridWidth = -1;
+    private static int gridHeight = -1;
     public static Noeud[] GenerateGraph(GraphSetting setting)
     {
-        List<Noeud> nodes = new List<Noeud>();
-        int gridWidth = Random.Range(setting.gridWidth.x, setting.gridWidth.y);
-        int gridHeight = Random.Range(setting.gridHeight.x, setting.gridHeight.y);
-        int[,] grid = new int[gridWidth, gridHeight];
-
+        nodes = new List<Noeud>();
+        gridWidth = Random.Range(setting.gridWidth.x, setting.gridWidth.y+1);
+        gridHeight = Random.Range(setting.gridHeight.x, setting.gridHeight.y+1);
+        grid = new int[gridWidth, gridHeight];
         //Create Root Node
-        Vector2 pos = Vector2.zero;
+        Vector2Int pos = new Vector2Int(gridWidth/2, gridHeight/2);
         Noeud rootNode = new Noeud(pos, Noeud.TYPE_DE_NOEUD.START);
         // Create new node
-        grid[(int)(pos.x) + gridWidth / 2, (int)(pos.y) + gridHeight / 2] = 0;
+        Debug.Log(pos);
+        grid[pos.x, pos.y] = 0;
         nodes.Add(rootNode);
 
         //Critical Path Generation
         int criticalpathLength = Random.Range(setting.criticalPathLength.x, setting.criticalPathLength.y+1);
-        bool result = GeneratePath(ref nodes, ref grid, 0, criticalpathLength);
+        bool result = GeneratePath(0, criticalpathLength);
         if (!result)
             return null;
         nodes[nodes.Count - 1].type = Noeud.TYPE_DE_NOEUD.END;
 
         bool obstacles = GenerateObstacles(
-            ref nodes,
-            ref grid,
             Random.Range(setting.obstacleCount.x, setting.obstacleCount.y + 1),
             Random.Range(setting.secondaryPathLength.x, setting.secondaryPathLength.y + 1));
 
         if (!obstacles)
             return null;
 
+        GenerateSecretNode(Random.Range(setting.secretNode.x, setting.secretNode.y + 1));
+
         return nodes.ToArray();
     }
 
-    private static bool GenerateObstacles(ref List<Noeud> nodes, ref int[,] grid, int obstacleCount, int secondaryPath)
+    private static void GenerateSecretNode(int secretNodeCount)
+    {
+        //init 
+        int[,] gridNeighbour = new int[gridWidth, gridHeight];
+
+        List<NeighbourNode> neighbourNodes = new List<NeighbourNode>();
+        for (int y = 0; y < gridHeight; y++)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+
+                Vector2Int pos = new Vector2Int(x, y);
+
+                //Right update
+                if (x + 1 < gridWidth)
+                {
+                    Vector2Int rightNeighBour = pos + new Vector2Int(1, 0);
+                    if (!IsCoordEmpty(rightNeighBour))
+                        gridNeighbour[x, y]++;
+                }
+
+                //Left update
+                if (x - 1 >= 0)
+                {
+                    Vector2Int leftNeighBour = pos + new Vector2Int(-1, 0);
+                    if (!IsCoordEmpty(leftNeighBour))
+                        gridNeighbour[x, y]++;
+                }
+
+                //Top update
+                if (y + 1 < gridHeight)
+                {
+                    Vector2Int topNeighBour = pos + new Vector2Int(0, 1);
+                    if (!IsCoordEmpty(topNeighBour))
+                        gridNeighbour[x, y]++;
+                }
+
+                //Bottom update
+                if (y - 1 >= 0)
+                {
+                    Vector2Int bottomNeighBour = pos + new Vector2Int(0, -1);
+                    if (!IsCoordEmpty(bottomNeighBour))
+                        gridNeighbour[x, y]++;
+                }
+                neighbourNodes.Add(new NeighbourNode { position = new Vector2Int(x, y), score = gridNeighbour[x, y] });
+            }
+        }
+
+        neighbourNodes = neighbourNodes.Where(node => IsCoordEmpty(node.position)).OrderByDescending(node => node.score).ToList();
+        for (int i = 0; i < secretNodeCount; i++)
+        {
+            Noeud node = new Noeud(neighbourNodes[i].position, Noeud.TYPE_DE_NOEUD.SECRET);
+            grid[neighbourNodes[i].position.x,
+                neighbourNodes[i].position.y] = i;
+            nodes.Add(node);
+        }
+    }
+
+    private static bool GenerateObstacles(int obstacleCount, int secondaryPath)
     {
         List<int> obstacle = new List<int>();
         int indexObstacle = -1;
@@ -55,7 +123,7 @@ public class GraphGenerationTool
             nodes[index].liens[index + 1] = Noeud.TYPE_DE_LIEN.CLOSE;
             nodes[index + 1].liens[index] = Noeud.TYPE_DE_LIEN.CLOSE;
 
-            bool resultSecondary = GeneratePath(ref nodes, ref grid, index, secondaryPath);
+            bool resultSecondary = GeneratePath(index, secondaryPath);
             if (!resultSecondary)
                 return false;
 
@@ -65,17 +133,17 @@ public class GraphGenerationTool
     }
     #region Path
 
-    private static bool GeneratePath(ref List<Noeud> nodes , ref int[,] grid, int rootNode, int pathLength)
+    private static bool GeneratePath(int rootNode, int pathLength)
     {
-        Vector2 pos = nodes[rootNode].position;
-        Vector2 direction = Vector2.zero;
+        Vector2Int pos = nodes[rootNode].position;
+        Vector2Int direction = Vector2Int.zero;
         int gridWidth = grid.GetLength(0);
         int gridHeight = grid.GetLength(1);
         int startIndex = nodes.Count;
         for (int i = startIndex; i < pathLength + startIndex; i++)
         {
             //Direction
-            direction = NewDirection(nodes, grid, pos, direction);
+            direction = NewDirection(pos, direction);
 
             // if no direction return no graph 
             if (direction == Vector2.zero)
@@ -87,7 +155,7 @@ public class GraphGenerationTool
 
             // Create new node
             Noeud node = new Noeud(pos, Noeud.TYPE_DE_NOEUD.INTERMEDIATE);
-            grid[(int)(pos.x) + gridWidth / 2, (int)(pos.y) + gridHeight / 2] = i;
+            grid[pos.x, pos.y] = i;
 
             //Bottom Link
             if(i == startIndex)
@@ -109,66 +177,57 @@ public class GraphGenerationTool
         }
         return true;
     }
+    
     #endregion
 
     #region Direction
-    private static Vector2 NewDirection(List<Noeud> nodes, int[,] grid, Vector2 position, Vector2 previousDirection)
+    private static Vector2Int NewDirection(Vector2Int position, Vector2Int previousDirection)
     {
         Vector2 direction = Vector2.zero;
         bool top, right, bottom, left;
-        int gridWidth = grid.GetLength(0);
-        int gridHeight = grid.GetLength(1);
 
         //  RIGHT
-        if (Mathf.Abs(position.x + 1) >= gridWidth / 2 ||
-            previousDirection.x == -1 ||
-                (position.x + 1 == 0 && position.y == 0))
-            right = false;
-        else if (grid[(int)(position.x + 1) + gridWidth / 2, (int)(position.y) + gridHeight / 2] != 0)
+        Vector2Int rightNeighBour = position + new Vector2Int(1, 0);
+        if (!IsCoordEmpty(rightNeighBour) ||
+            previousDirection.x == -1)
             right = false;
         else
             right = true;
-        
+
         //  LEFT
-        if (Mathf.Abs(position.x - 1) >= gridWidth / 2 ||
-            previousDirection.x == 1 ||
-                (position.x - 1 == 0 && position.y == 0))
-            left = false;
-        else if (grid[(int)(position.x - 1) + gridWidth / 2, (int)(position.y) + gridHeight / 2] != 0)
+        Vector2Int leftNeighBour = position + new Vector2Int(-1, 0);
+        if (!IsCoordEmpty(leftNeighBour) ||
+            previousDirection.x == 1)
             left = false;
         else
             left = true;
 
         //  TOP
-        if (Mathf.Abs(position.y + 1) >= gridHeight / 2 ||
-            previousDirection.y == -1 ||
-                (position.x == 0 && position.y + 1 == 0))
-            top = false;
-        else if (grid[(int)(position.x) + gridWidth / 2, (int)(position.y + 1) + gridHeight / 2] != 0)
+        Vector2Int topNeighBour = position + new Vector2Int(0, 1);
+        if (!IsCoordEmpty(topNeighBour) ||
+            previousDirection.y == -1)
             top = false;
         else
             top = true;
 
         //  BOTTOM
-        if (Mathf.Abs(position.y - 1) >= gridHeight / 2 ||
-            previousDirection.y == 1 ||
-                (position.x == 0 && position.y - 1 == 0))
-            bottom = false;
-        else if (grid[(int)(position.x) + gridWidth / 2, (int)(position.y - 1) + gridHeight / 2] != 0)
+        Vector2Int bottomNeighBour = position + new Vector2Int(0, -1);
+        if (!IsCoordEmpty(bottomNeighBour) ||
+            previousDirection.y == 1)
             bottom = false;
         else
             bottom = true;
 
         // if no available direction return no direction
         if (!top && !right && !bottom && !left)
-            return Vector2.zero;
+            return Vector2Int.zero;
         else
             return GenerateNewDirection(top, right, bottom, left);
     }
 
-    private static Vector2 GenerateNewDirection(bool top, bool right, bool bottom, bool left)
+    private static Vector2Int GenerateNewDirection(bool top, bool right, bool bottom, bool left)
     {
-        Vector2 direction = Vector2.zero;
+        Vector2Int direction = Vector2Int.zero;
         if (right && left)
             direction.x = Random.Range(0, 2) == 1 ? 1 : -1;
         else if (right)
@@ -203,4 +262,18 @@ public class GraphGenerationTool
         return direction;
     }
     #endregion
+
+    private static int GetNodeIndexFromPos(Vector2Int pos)
+    {
+        if (pos.x < 0 || pos.x >= gridWidth)
+            return -1;
+        if (pos.y < 0 || pos.y >= gridHeight)
+            return -1;
+        return grid[pos.x, pos.y];
+    }
+
+    private static bool IsCoordEmpty(Vector2Int pos)
+    {
+        return !(GetNodeIndexFromPos(pos) != 0 || pos == new Vector2Int(gridWidth/2, gridHeight/2));
+    }
 }
