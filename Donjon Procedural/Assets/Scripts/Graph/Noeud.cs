@@ -17,16 +17,17 @@ public class Noeud
         END,
         KEY,
         OBSTACLE,
-        INTERMEDIATE
+        INTERMEDIATE,
+        SECRET
     };
 
     public TYPE_DE_NOEUD type;
     public GameObject sallePrefab;
-    public Vector2 position;
+    public Vector2Int position;
     public Dictionary<int, TYPE_DE_LIEN> liens;
     private Vector2 vector2;
 
-    public Noeud(Vector2 vector2, TYPE_DE_NOEUD type)
+    public Noeud(Vector2Int vector2, TYPE_DE_NOEUD type)
     {
         this.position = vector2;
         this.type = type;

@@ -27,5 +27,7 @@ public class GraphSetting : ScriptableObject
     public Vector2Int obstacleCount;
     [MinMaxSlider(1, 50)]
     public Vector2Int secondaryPathLength;
+    [MinMaxSlider(0, 3)]
+    public Vector2Int secretNode;
 
 }

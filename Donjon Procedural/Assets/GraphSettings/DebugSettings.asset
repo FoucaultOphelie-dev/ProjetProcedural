@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7934a991c04883544ab630cc14a71d86, type: 3}
   m_Name: DebugSettings
   m_EditorClassIdentifier: 
-  gridWidth: {x: 14, y: 17}
-  gridHeight: {x: 8, y: 10}
+  gridWidth: {x: 26, y: 30}
+  gridHeight: {x: 6, y: 10}
   criticalPathLength: {x: 10, y: 12}
   obstacleCount: {x: 1, y: 2}
-  secondaryPathLength: {x: 3, y: 5}
+  secondaryPathLength: {x: 2, y: 5}
+  secretNode: {x: 1, y: 1}

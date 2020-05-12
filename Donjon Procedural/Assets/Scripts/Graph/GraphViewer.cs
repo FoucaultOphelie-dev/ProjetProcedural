@@ -10,6 +10,9 @@ public class GraphViewer : MonoBehaviour
     [HideInInspector] public Noeud[] currentGraph = null;
     public bool everyFrame;
 
+    private int gridWidth = 0;
+    private int gridHeight = 0;
+
     private void OnDrawGizmos()
     {
         if (currentGraph == null) return;
@@ -33,10 +36,13 @@ public class GraphViewer : MonoBehaviour
                 case Noeud.TYPE_DE_NOEUD.INTERMEDIATE:
                     Gizmos.color = Color.white;
                     break;
+                case Noeud.TYPE_DE_NOEUD.SECRET:
+                    Gizmos.color = Color.magenta;
+                    break;
                 default:
                     break;
             }
-            Gizmos.DrawCube(node.position, new Vector2(0.5f, 0.5f));
+            Gizmos.DrawCube(new Vector3(node.position.x, node.position.y), new Vector2(0.5f, 0.5f));
 
             //Draw Link
             foreach (KeyValuePair<int, Noeud.TYPE_DE_LIEN> lien in node.liens)
@@ -55,7 +61,7 @@ public class GraphViewer : MonoBehaviour
                     default:
                         break;
                 }
-                Gizmos.DrawLine(node.position, currentGraph[lien.Key].position);
+                Gizmos.DrawLine(new Vector3(node.position.x, node.position.y), new Vector3(currentGraph[lien.Key].position.x, currentGraph[lien.Key].position.y));
             }
         }
     }
@@ -85,7 +91,8 @@ public class GraphViewer : MonoBehaviour
         do
         {
             Debug.Log("Generate");
-            currentGraph = GraphGenerationTool.GenerateGraph(currentSetting);
+            currentGraph = GraphGenerationTool.GenerateGraph(currentSetting, ref gridWidth, ref gridHeight);
+            Camera.main.transform.position = new Vector3(gridWidth / 2, gridHeight / 2, -10);
             i++;
         } while (currentGraph == null && i < iterationMax);
         if (currentGraph == null)
