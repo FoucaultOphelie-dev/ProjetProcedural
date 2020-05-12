@@ -234,6 +234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentSetting: {fileID: 11400000, guid: 9c232302c8c5e4d4fae642fa2c4687bb, type: 2}
+  iterationMax: 2
+  everyFrame: 0
 --- !u!4 &1313090313
 Transform:
   m_ObjectHideFlags: 0
