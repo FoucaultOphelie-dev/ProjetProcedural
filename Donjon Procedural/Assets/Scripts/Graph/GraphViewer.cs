@@ -97,7 +97,6 @@ public class GraphViewer : MonoBehaviour
         int i = 0;
         do
         {
-            Debug.Log("Generate");
             currentGraph = GraphGenerationTool.GenerateGraph(currentSetting, ref gridWidth, ref gridHeight);
             Camera.main.transform.position = new Vector3(gridWidth / 2, gridHeight / 2, -10);
             i++;
