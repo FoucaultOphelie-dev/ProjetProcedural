@@ -5,12 +5,19 @@ using UnityEngine;
 
 public class RoomSettings : MonoBehaviour
 {
-    public Noeud.TYPE_DE_NOEUD type;
-    public int dangerosity = 1;
-    public Door doorUp;
-    public Door doorDown;
-    public Door doorLeft;
-    public Door doorRight;
+    public enum DANGERORITY
+    {
+        EASY,
+        INTERMEDIATE,
+        DIFFICULT,
+    }
+    public Noeud.TYPE_DE_NOEUD type = Noeud.TYPE_DE_NOEUD.INTERMEDIATE;
+    public DANGERORITY dangerosity= DANGERORITY.EASY;
+    private Door doorUp;
+    private Door doorDown;
+    private Door doorLeft;
+    private Door doorRight;
+    private Door[] listDoor;
     private string flag;
 
     [HideInInspector]
@@ -21,7 +28,31 @@ public class RoomSettings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        listDoor = GetComponentsInChildren<Door>();
+        foreach (Door door in listDoor)
+        {
+            if (door.gameObject.transform.localRotation.z == 0)
+            {
+                doorUp = door;
+            }
+            else if (door.gameObject.transform.localRotation.eulerAngles.z == 180)
+            {
+                doorDown = door;
+
+            }
+            else if (door.gameObject.transform.localRotation.eulerAngles.z == 270)
+            {
+                doorRight = door;
+
+            }
+            else
+            {
+                doorLeft = door;
+
+            }
+        }
         flag = "0x" + (int)doorRight.obligations + (int)doorLeft.obligations + (int)doorUp.obligations + (int)doorDown.obligations;
         roomFlag = Convert.ToInt32(flag, 16);
+        Debug.Log(flag);
     }
 }
