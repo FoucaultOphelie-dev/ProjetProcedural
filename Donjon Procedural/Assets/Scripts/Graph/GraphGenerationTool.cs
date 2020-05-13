@@ -15,13 +15,13 @@ public static class GraphGenerationTool
     private static int[,] grid = null;
     private static int gridWidth = -1;
     private static int gridHeight = -1;
-    public static Noeud[] GenerateGraph(GraphSetting setting, ref int gridWidth, ref int gridHeight)
+    private readonly static Vector2Int[] neighBours = new Vector2Int[4] { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down } ;
+
+public static Noeud[] GenerateGraph(GraphSetting setting)
     {
         nodes = new List<Noeud>();
-        GraphGenerationTool.gridWidth = Random.Range(setting.gridWidth.x, setting.gridWidth.y+1);
-        GraphGenerationTool.gridHeight = Random.Range(setting.gridHeight.x, setting.gridHeight.y+1);
-        gridWidth = GraphGenerationTool.gridWidth;
-        gridHeight = GraphGenerationTool.gridHeight;
+        gridWidth = Random.Range(setting.gridWidth.x, setting.gridWidth.y+1);
+        gridHeight = Random.Range(setting.gridHeight.x, setting.gridHeight.y+1);
         grid = new int[gridWidth, gridHeight];
         //Create Root Node
         Vector2Int pos = new Vector2Int(gridWidth/2, gridHeight/2);
@@ -46,13 +46,18 @@ public static class GraphGenerationTool
 
         GenerateSecretNode(Random.Range(setting.secretNode.x, setting.secretNode.y + 1));
 
+        //Set graph at origin
+        for (int i = 1; i < nodes.Count; i++)
+        {
+            nodes[i].position = nodes[i].position - nodes[0].position;
+        }
+        nodes[0].position = Vector2Int.zero;
         return nodes.ToArray();
     }
 
     private static void GenerateSecretNode(int secretNodeCount)
     {
         //init 
-        Vector2Int[] neighBours = new Vector2Int[] { new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(0, -1) };
         int[,] gridNeighbour = new int[gridWidth, gridHeight];
         bool[,][] gridAccessNeighbour = new bool[gridWidth, gridHeight][];
         List<NeighbourNode> neighbourNodes = new List<NeighbourNode>();
@@ -131,6 +136,7 @@ public static class GraphGenerationTool
         }
         return true;
     }
+
     #region Path
 
     private static bool GeneratePath(int rootNode, int pathLength)
@@ -184,8 +190,20 @@ public static class GraphGenerationTool
     private static Vector2Int NewDirection(Vector2Int position, Vector2Int previousDirection)
     {
         Vector2 direction = Vector2.zero;
-        bool top, right, bottom, left;
-
+        bool[] neighboursIsEmpty = new bool[4];
+        for (int i = 0; i < neighboursIsEmpty.Length; i++)
+        {
+            neighboursIsEmpty[i] = IsCoordEmpty(position + neighBours[i]);
+        } 
+        if (!neighboursIsEmpty[0] &&
+            !neighboursIsEmpty[1] &&
+            !neighboursIsEmpty[2] &&
+            !neighboursIsEmpty[3])
+            return Vector2Int.zero;
+        else
+            return GenerateNewDirection(neighboursIsEmpty);
+        /*
+        //bool top, right, bottom, left;
         //  RIGHT
         Vector2Int rightNeighBour = position + new Vector2Int(1, 0);
         if (!IsCoordEmpty(rightNeighBour) ||
@@ -217,31 +235,31 @@ public static class GraphGenerationTool
             bottom = false;
         else
             bottom = true;
-
         // if no available direction return no direction
         if (!top && !right && !bottom && !left)
             return Vector2Int.zero;
         else
             return GenerateNewDirection(top, right, bottom, left);
+        */
     }
 
-    private static Vector2Int GenerateNewDirection(bool top, bool right, bool bottom, bool left)
+    private static Vector2Int GenerateNewDirection(bool[] neighbours)
     {
         Vector2Int direction = Vector2Int.zero;
-        if (right && left)
+        if (neighbours[0] && neighbours[1])
             direction.x = Random.Range(0, 2) == 1 ? 1 : -1;
-        else if (right)
+        else if (neighbours[0])
             direction.x = 1;
-        else if (left)
+        else if (neighbours[1])
             direction.x = -1;
         else
             direction.x = 0;
 
-        if (top && bottom)
+        if (neighbours[2] && neighbours[3])
             direction.y = Random.Range(0, 2) == 1 ? 1 : -1;
-        else if (top)
+        else if (neighbours[2])
             direction.y = 1;
-        else if (bottom)
+        else if (neighbours[3])
             direction.y = -1;
         else
             direction.y = 0;

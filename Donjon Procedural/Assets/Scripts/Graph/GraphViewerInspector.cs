@@ -12,13 +12,19 @@ public class GraphViewerInspector : Editor
         base.OnInspectorGUI();
         serializedObject.Update();
         GraphViewer viewer = target as GraphViewer;
-        if (GUILayout.Button("Generate Graph"))
+        if (GUILayout.Button("Generate Dungeon"))
         {
-            viewer.GenerateGraph();
+            viewer.GenerateDungeon();
             UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
             UnityEditor.SceneView.RepaintAll();
         }
-        if (viewer.everyFrame)
+        if (GUILayout.Button("Delete Graph"))
+        {
+            viewer.DeleteGraph();
+            UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
+            UnityEditor.SceneView.RepaintAll();
+        }
+        if (viewer.loopGeneration)
         {
             // Ensure continuous Update calls.
             if (!Application.isPlaying)

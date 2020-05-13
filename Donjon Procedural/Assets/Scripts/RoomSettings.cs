@@ -21,7 +21,7 @@ public class RoomSettings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        flag = "0x" + (int)doorRight.obligations + (int)doorLeft.obligations + (int)doorUp.obligations + (int)doorDown.obligations;
-        roomFlag = Convert.ToInt32(flag, 16);
+        //flag = "0x" + (int)doorRight.obligations + (int)doorLeft.obligations + (int)doorUp.obligations + (int)doorDown.obligations;
+        //roomFlag = Convert.ToInt32(flag, 16);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,15 +7,22 @@ using UnityEngine;
 public class GraphViewer : MonoBehaviour
 {
     public GraphSetting currentSetting;
+    public GameObject roomPrefabs;
+    public Vector2 roomSize;
     public int iterationMax = 1;
     [Range(0f,1f)]
     public float RefreshTime = 0.5f;
+    public bool loopGeneration;
     private float timer = 0f;
     [HideInInspector] public Noeud[] currentGraph = null;
-    public bool everyFrame;
-
-    private int gridWidth = 0;
-    private int gridHeight = 0;
+    private void Start()
+    {
+        if(currentGraph != null)
+        {
+            DeleteGraph();
+        }
+        GenerateDungeon();
+    }
 
     private void OnDrawGizmos()
     {
@@ -45,7 +53,7 @@ public class GraphViewer : MonoBehaviour
                 default:
                     break;
             }
-            Gizmos.DrawCube(new Vector3(node.position.x, node.position.y), new Vector2(0.5f, 0.5f));
+            Gizmos.DrawCube((Vector2)node.position * roomSize, roomSize);
 
             //Draw Link
             foreach (KeyValuePair<int, Noeud.TYPE_DE_LIEN> lien in node.liens)
@@ -64,46 +72,66 @@ public class GraphViewer : MonoBehaviour
                     default:
                         break;
                 }
-                Gizmos.DrawLine(new Vector3(node.position.x, node.position.y), new Vector3(currentGraph[lien.Key].position.x, currentGraph[lien.Key].position.y));
+                Gizmos.DrawLine((Vector2)node.position * roomSize, (Vector2)currentGraph[lien.Key].position * roomSize);
             }
+        }
+    }
+
+    public void DeleteGraph()
+    {
+        currentGraph = null;
+        while (transform.childCount > 0)
+        {
+            DestroyImmediate(transform.GetChild(0).gameObject);
         }
     }
 
     private void Update()
     {
-        if(everyFrame && timer >= RefreshTime)
+        timer += Time.deltaTime;
+        if (loopGeneration && timer >= RefreshTime)
         {
-            GenerateGraph();
+            GenerateDungeon();
             timer = 0;
         }
-        timer += Time.deltaTime;
     }
 
     private void OnGUI()
     {
         if (GUILayout.Button("Generate")){
-            GenerateGraph();
+            GenerateDungeon();
         }
 
         if (GUILayout.Button("Generate YOLO Mode"))
         {
-            everyFrame = !everyFrame;
+            loopGeneration = !loopGeneration;
         }
-        GUILayout.Label("Mode : " + everyFrame);
+        GUILayout.Label("Mode : " + loopGeneration);
     }
 
-    public void GenerateGraph()
+    public void GenerateDungeon()
     {
+        if (currentGraph != null)
+            DeleteGraph();
+        float starttime = Time.realtimeSinceStartup;
         int i = 0;
         do
         {
-            currentGraph = GraphGenerationTool.GenerateGraph(currentSetting, ref gridWidth, ref gridHeight);
-            Camera.main.transform.position = new Vector3(gridWidth / 2, gridHeight / 2, -10);
+            currentGraph = GraphGenerationTool.GenerateGraph(currentSetting);
+            //Camera.main.transform.position = new Vector3(gridWidth / 2, gridHeight / 2, -10);
             i++;
         } while (currentGraph == null && i < iterationMax);
-        if (currentGraph == null)
+        if (currentGraph != null && roomPrefabs != null)
+        {
+            foreach(Noeud node in currentGraph)
+            {
+                Instantiate(roomPrefabs, (node.position * roomSize) - roomSize/2, Quaternion.identity, transform);
+            }
+        }
+        else
         {
             Debug.LogError("Damn we are in trouble ...");
         }
+        Debug.Log(System.Math.Round((Time.realtimeSinceStartup - starttime) * 1000, 2) + "ms (try:" + i + ")");
     }
 }
