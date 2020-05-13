@@ -9,7 +9,4 @@ public class DificultySetting : ScriptableObject
     public AnimationCurve courbeEasy;
     public AnimationCurve courbeIntermediate;
     public AnimationCurve courbeDificult;
-
-    [MinMaxSlider(1, 10)]
-    public Vector2Int DifficutyOfRooms;
 }
