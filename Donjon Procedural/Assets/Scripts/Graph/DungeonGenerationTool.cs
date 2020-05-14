@@ -17,6 +17,7 @@ public static class DungeonGenerationTool
         foreach (Noeud node in graph)
         {
             node.sallePrefab = UnityEngine.Object.Instantiate(node.sallePrefab, (Vector2)node.position * roomSize - roomSize / 2, Quaternion.identity, parent);
+            node.sallePrefab.GetComponent<Room>().position = node.position;
         }
         graph = PlaceDoor(graph);
         return graph;
