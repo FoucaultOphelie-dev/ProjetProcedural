@@ -13,10 +13,14 @@ public class RoomSettings : MonoBehaviour
     }
     public Noeud.TYPE_DE_NOEUD type = Noeud.TYPE_DE_NOEUD.INTERMEDIATE;
     public DANGEROSITY dangerosity= DANGEROSITY.EASY;
-    private Door doorUp;
-    private Door doorDown;
-    private Door doorLeft;
-    private Door doorRight;
+    [HideInInspector]
+    public Door doorUp;
+    [HideInInspector]
+    public Door doorDown;
+    [HideInInspector]
+    public Door doorLeft;
+    [HideInInspector]
+    public Door doorRight;
     private Door[] listDoor;
     private string flag;
 

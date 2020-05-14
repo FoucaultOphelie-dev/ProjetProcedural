@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bae2c900e3fca644a1121aabeefc547, type: 3}
   m_Name: DebugRoomDatabase
   m_EditorClassIdentifier: 
-  rooms: []
+  rooms:
+  - {fileID: 220972408990723460, guid: cb9725cb714cd3a4a87ee195b8f4230f, type: 3}
+  - {fileID: 220972408990723460, guid: 3af2d2a339126484ea79da5658f5400b, type: 3}
+  - {fileID: 220972408990723460, guid: b6ac4ee4540bfbb4894e555b9ab36bf7, type: 3}
+  - {fileID: 220972408990723460, guid: d0b7bf7bdf07aa046b9180743b1e2712, type: 3}
+  - {fileID: 220972408990723460, guid: 0208a9b6d6850aa469dc79484f5e72da, type: 3}
+  - {fileID: 220972408990723460, guid: 8d4bff28df66add429bb3d250ee7789b, type: 3}
+  - {fileID: 220972408990723460, guid: 99bb887ee5989544794f49578d38bae1, type: 3}
+  - {fileID: 220972408990723460, guid: dd7286d67db17954daa6ed5b53a3052d, type: 3}
+  - {fileID: 220972408990723460, guid: f68915d4f87619e44bc798efebc317f8, type: 3}
+  - {fileID: 220972408990723460, guid: 70b7d418366493e419cd2932751727b0, type: 3}
+  - {fileID: 220972408990723460, guid: a53147cfc2031ab49a535287433c163b, type: 3}
+  - {fileID: 220972408990723460, guid: ab0eb59ae4590b54590ca39579265167, type: 3}
+  - {fileID: 220972408990723460, guid: 1cc37c61e57fa3a499da6da500ed1e2e, type: 3}
+  - {fileID: 220972408990723460, guid: 6a510b1ee1d83e249b10b567d09c5a45, type: 3}
+  - {fileID: 220972408990723460, guid: 14bad1f5ceaca9c47841269661fd90e4, type: 3}
