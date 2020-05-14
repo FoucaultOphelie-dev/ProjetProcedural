@@ -133,9 +133,9 @@ public class GraphViewer : MonoBehaviour
         }
         else
         {   
-            currentGraph = DungeonGenerationTool.GenerateDungeon(difficultySetting, currentGraph, new List<GameObject>());
+            currentGraph = DungeonGenerationTool.GenerateDungeon(difficultySetting, roomSize, currentGraph, roomsPrefabs.rooms.ToArray(), transform);
         }
-        Debug.Log(System.Math.Round((Time.realtimeSinceStartup - starttime) * 1000, 2) + "ms (try:" + i + ")");
+        //Debug.Log(System.Math.Round((Time.realtimeSinceStartup - starttime) * 1000, 2) + "ms (try:" + i + ")");
     }
 
     private Color GetRoomColorByType(Noeud.TYPE_DE_NOEUD type)

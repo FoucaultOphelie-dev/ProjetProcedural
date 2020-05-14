@@ -26,6 +26,7 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
         //Create Root Node
         Vector2Int pos = new Vector2Int(gridWidth/2, gridHeight/2);
         Noeud rootNode = new Noeud(pos, Noeud.TYPE_DE_NOEUD.START);
+        //rootNode.liens.Add(1, Noeud.TYPE_DE_LIEN.OPEN);
         // Create new node
         grid[pos.x, pos.y] = 0;
         nodes.Add(rootNode);
@@ -58,6 +59,29 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
 
     private static void GenerateSecretNode(int secretNodeCount)
     {
+        /*
+        List<Noeud> keys = new List<Noeud>();
+        foreach (Noeud node in nodes)
+        {
+            if(node.type== Noeud.TYPE_DE_NOEUD.KEY)
+            {
+                keys.Add(node);
+            }
+        }
+        if (secretNodeCount < keys.Count)
+        {
+            for (int j = 0; j < secretNodeCount; j++)
+            {
+                Noeud node = Random.Range()
+            }
+        }
+        else
+        {
+
+        }
+        */
+
+
         //init 
         int[,] gridNeighbour = new int[gridWidth, gridHeight];
         bool[,][] gridAccessNeighbour = new bool[gridWidth, gridHeight][];
@@ -142,6 +166,7 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
 
     private static bool GeneratePath(int rootNode, int pathLength)
     {
+        nodes[rootNode].liens.Add(nodes.Count, Noeud.TYPE_DE_LIEN.OPEN);
         Vector2Int pos = nodes[rootNode].position;
         Vector2Int direction = Vector2Int.zero;
         int gridWidth = grid.GetLength(0);

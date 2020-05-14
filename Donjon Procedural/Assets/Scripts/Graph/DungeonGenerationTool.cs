@@ -1,22 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public static class DungeonGenerationTool
 {
-    public static Noeud[] GenerateDungeon(DifficultySetting difficultySetting, Noeud[] nodes, List<GameObject> roomsPrefabs)
+    public static Noeud[] GenerateDungeon(DifficultySetting difficultySetting, Vector2 roomSize, Noeud[] graph, GameObject[] roomsPrefabs, Transform parent)
     {
-        List<RoomSettings.DANGEROSITY> dangerosityList = GenerateDifficultyTool.GenerateDifficulty(difficultySetting, nodes);
-        for (int i = 0; i < nodes.Length; i++)
+        graph = GenerateDifficultyTool.GenerateDifficulty(difficultySetting, graph);
+        foreach ( GameObject go in roomsPrefabs)
         {
-            nodes[i].dangerosity = dangerosityList[i];
+            go.GetComponent<RoomSettings>().Initialisation();
         }
-
-        return nodes;
+        graph = FindRooms(roomsPrefabs, graph);
+        foreach (Noeud node in graph)
+        {
+            node.sallePrefab = UnityEngine.Object.Instantiate(node.sallePrefab, (Vector2)node.position * roomSize - roomSize / 2, Quaternion.identity, parent);
+        }
+        graph = PlaceDoor(graph);
+        return graph;
     }
 
-    public static Noeud[] FindRooms(GameObject[] dataBase, Noeud[] graph)
+    private static Noeud[] FindRooms(GameObject[] dataBase, Noeud[] graph)
     {
         List<int> criteres = new List<int>() { 0x4000, 0x0400, 0x0040, 0x0004 };
         foreach (Noeud node in graph)
@@ -44,6 +50,7 @@ public static class DungeonGenerationTool
 
             foreach (GameObject go in dataBase)
             {
+                
                 bool result = true;
                 foreach (int critere in criteres)
                 {
@@ -64,87 +71,78 @@ public static class DungeonGenerationTool
                     }
                 }
             }
-
-            node.sallePrefab = roomsPossible[Random.Range(0, roomsPossible.Count + 1)];
+            node.sallePrefab = roomsPossible[UnityEngine.Random.Range(0, roomsPossible.Count)];
         }
         return graph;
     }
 
-    private static Noeud[] placeDoor(Noeud[] graph)
+    private static Noeud[] PlaceDoor(Noeud[] graph)
     {
         foreach (Noeud node in graph)
         {
+            RoomSettings roomSettings = node.sallePrefab.GetComponent<RoomSettings>();
             foreach (int key in node.liens.Keys)
             {
-                if (graph[key].position.x > node.position.x)
-                {
-                    switch (node.liens[key])
-                    {
-                        case Noeud.TYPE_DE_LIEN.CLOSE:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorLeft.closedGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorLeft.wallGo.SetActive(false);
-                            break;
-                        case Noeud.TYPE_DE_LIEN.OPEN:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorLeft.openGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorLeft.wallGo.SetActive(false);
-                            break;
-                        case Noeud.TYPE_DE_LIEN.SECRET:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorLeft.secretGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorLeft.wallGo.SetActive(false);
-                            break;
-                    }
-                }
                 if (graph[key].position.x < node.position.x)
                 {
                     switch (node.liens[key])
                     {
                         case Noeud.TYPE_DE_LIEN.CLOSE:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorRight.closedGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorRight.wallGo.SetActive(false);
+                            roomSettings.doorLeft.SetState(Door.STATE.CLOSED);
                             break;
                         case Noeud.TYPE_DE_LIEN.OPEN:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorRight.openGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorRight.wallGo.SetActive(false);
+                            roomSettings.doorLeft.SetState(Door.STATE.OPEN);
                             break;
                         case Noeud.TYPE_DE_LIEN.SECRET:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorRight.secretGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorRight.wallGo.SetActive(false);
+                            roomSettings.doorLeft.SetState(Door.STATE.SECRET);
                             break;
                     }
                 }
+
+                if (graph[key].position.x > node.position.x)
+                {
+                    switch (node.liens[key])
+                    {
+                        case Noeud.TYPE_DE_LIEN.CLOSE:
+                            roomSettings.doorRight.SetState(Door.STATE.CLOSED);
+                            break;
+                        case Noeud.TYPE_DE_LIEN.OPEN:
+                            roomSettings.doorRight.SetState(Door.STATE.OPEN);
+                            break;
+                        case Noeud.TYPE_DE_LIEN.SECRET:
+                            roomSettings.doorRight.SetState(Door.STATE.SECRET);
+                            break;
+                    }
+                }
+
                 if (graph[key].position.y > node.position.y)
                 {
                     switch (node.liens[key])
                     {
                         case Noeud.TYPE_DE_LIEN.CLOSE:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorUp.closedGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorUp.wallGo.SetActive(false);
+                            roomSettings.doorUp.SetState(Door.STATE.CLOSED);
                             break;
                         case Noeud.TYPE_DE_LIEN.OPEN:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorUp.openGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorUp.wallGo.SetActive(false);
+                            roomSettings.doorUp.SetState(Door.STATE.OPEN);
                             break;
                         case Noeud.TYPE_DE_LIEN.SECRET:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorUp.secretGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorUp.wallGo.SetActive(false);
+                            roomSettings.doorUp.SetState(Door.STATE.SECRET);
                             break;
                     }
                 }
+
                 if (graph[key].position.y < node.position.y)
                 {
                     switch (node.liens[key])
                     {
                         case Noeud.TYPE_DE_LIEN.CLOSE:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorDown.closedGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorDown.wallGo.SetActive(false);
+                            roomSettings.doorDown.SetState(Door.STATE.CLOSED);
                             break;
                         case Noeud.TYPE_DE_LIEN.OPEN:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorDown.openGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorDown.wallGo.SetActive(false);
+                            roomSettings.doorDown.SetState(Door.STATE.OPEN);
                             break;
                         case Noeud.TYPE_DE_LIEN.SECRET:
-                            node.sallePrefab.GetComponent<RoomSettings>().doorDown.secretGo.SetActive(true);
-                            node.sallePrefab.GetComponent<RoomSettings>().doorDown.wallGo.SetActive(false);
+                            roomSettings.doorDown.SetState(Door.STATE.SECRET);
                             break;
                     }
                 }

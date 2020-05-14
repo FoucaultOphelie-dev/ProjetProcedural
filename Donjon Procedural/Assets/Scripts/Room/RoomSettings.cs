@@ -27,10 +27,7 @@ public class RoomSettings : MonoBehaviour
     [HideInInspector]
     public int roomFlag;
     
-    
-
-    // Start is called before the first frame update
-    void Start()
+    public void Initialisation()
     {
         listDoor = GetComponentsInChildren<Door>();
         foreach (Door door in listDoor)
@@ -54,9 +51,9 @@ public class RoomSettings : MonoBehaviour
                 doorLeft = door;
 
             }
+            door.SetState(Door.STATE.WALL);
         }
         flag = "0x" + (int)doorRight.obligations + (int)doorLeft.obligations + (int)doorUp.obligations + (int)doorDown.obligations;
         roomFlag = Convert.ToInt32(flag, 16);
-        Debug.Log(flag);
     }
 }

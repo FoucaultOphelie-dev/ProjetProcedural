@@ -5,21 +5,20 @@ using UnityEngine;
 public static class GenerateDifficultyTool
 {
 
-    public static List<RoomSettings.DANGEROSITY> GenerateDifficulty(DifficultySetting difficultySetting, Noeud[] graph)
+    public static Noeud[] GenerateDifficulty(DifficultySetting difficultySetting, Noeud[] graph)
     {
         List<float> listOfDifficulty = GenerateListNumberDificulty(difficultySetting, graph);
-        List<RoomSettings.DANGEROSITY> difficulty = new List<RoomSettings.DANGEROSITY>();
         
         for (int i = 0; i < listOfDifficulty.Count; i++)
         {
             graph[i].dangerosityValue = listOfDifficulty[i];
-            difficulty.Add(randomStat(
+            graph[i].dangerosity = randomStat(
                 difficultySetting.courbeEasy.Evaluate(listOfDifficulty[i]),
                 difficultySetting.courbeIntermediate.Evaluate(listOfDifficulty[i]),
-                difficultySetting.courbeDificult.Evaluate(listOfDifficulty[i])));
+                difficultySetting.courbeDificult.Evaluate(listOfDifficulty[i]));
         }
         
-        return difficulty;
+        return graph;
     }
 
     private static List<float> GenerateListNumberDificulty(DifficultySetting difficultySetting, Noeud[] graph)

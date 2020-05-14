@@ -35,7 +35,7 @@ public class Room : MonoBehaviour {
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
         Bounds cameraBounds = _GetWorldRoomBounds();
         cameraFollow.SetBounds(cameraBounds);
-		Player.Instance.EnterRoom(this);
+		//Player.Instance.EnterRoom(this);
     }
 
 
