@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 220972408990723461}
   - component: {fileID: 220972408990723456}
   m_Layer: 0
-  m_Name: RoomBase
+  m_Name: RoomBase 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 346841852cb3f1947ae6d566a64df216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 2
   dangerosity: 1
   roomFlag: 0
 --- !u!114 &220972408990723462
