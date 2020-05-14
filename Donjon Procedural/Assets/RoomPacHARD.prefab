@@ -62,13 +62,34 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 11, y: 5}
-  - {x: 10, y: 5}
-  - {x: 10, y: 8}
   - {x: 1, y: 8}
   - {x: 1, y: 5}
   - {x: 0, y: 5}
   - {x: 0, y: 9}
+  - {x: 5, y: 9}
+  - {x: 5, y: 8}
+  - {x: 1, y: 8}
+--- !u!68 &3936583418545124229
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224831524451626657}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 11, y: 5}
+  - {x: 10, y: 5}
+  - {x: 10, y: 8}
+  - {x: 6, y: 8}
+  - {x: 6, y: 9}
   - {x: 11, y: 9}
   - {x: 11, y: 5}
 --- !u!1 &2604720973103035408
@@ -851,7 +872,7 @@ PrefabInstance:
     - target: {fileID: 220972410103612479, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: m_tileDataList.Array.data[485]
-      value: 0
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 220972410103612479, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}

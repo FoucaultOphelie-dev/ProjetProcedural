@@ -900,7 +900,7 @@ PrefabInstance:
     - target: {fileID: 220972410103612479, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: m_tileDataList.Array.data[485]
-      value: 63
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 220972410103612479, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
