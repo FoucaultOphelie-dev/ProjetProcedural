@@ -7,6 +7,7 @@ public struct NeighbourNode
 {
     public Vector2Int position;
     public int score;
+    public bool[] access;
 }
 public static class GraphGenerationTool
 {
@@ -14,19 +15,18 @@ public static class GraphGenerationTool
     private static int[,] grid = null;
     private static int gridWidth = -1;
     private static int gridHeight = -1;
-    public static Noeud[] GenerateGraph(GraphSetting setting, ref int gridWidth, ref int gridHeight)
+    private readonly static Vector2Int[] neighBours = new Vector2Int[4] { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down } ;
+
+public static Noeud[] GenerateGraph(GraphSetting setting)
     {
         nodes = new List<Noeud>();
-        GraphGenerationTool.gridWidth = Random.Range(setting.gridWidth.x, setting.gridWidth.y+1);
-        GraphGenerationTool.gridHeight = Random.Range(setting.gridHeight.x, setting.gridHeight.y+1);
-        gridWidth = GraphGenerationTool.gridWidth;
-        gridHeight = GraphGenerationTool.gridHeight;
+        gridWidth = Random.Range(setting.gridWidth.x, setting.gridWidth.y+1);
+        gridHeight = Random.Range(setting.gridHeight.x, setting.gridHeight.y+1);
         grid = new int[gridWidth, gridHeight];
         //Create Root Node
         Vector2Int pos = new Vector2Int(gridWidth/2, gridHeight/2);
         Noeud rootNode = new Noeud(pos, Noeud.TYPE_DE_NOEUD.START);
         // Create new node
-        Debug.Log(pos);
         grid[pos.x, pos.y] = 0;
         nodes.Add(rootNode);
 
@@ -46,6 +46,12 @@ public static class GraphGenerationTool
 
         GenerateSecretNode(Random.Range(setting.secretNode.x, setting.secretNode.y + 1));
 
+        //Set graph at origin
+        for (int i = 1; i < nodes.Count; i++)
+        {
+            nodes[i].position = nodes[i].position - nodes[0].position;
+        }
+        nodes[0].position = Vector2Int.zero;
         return nodes.ToArray();
     }
 
@@ -53,57 +59,54 @@ public static class GraphGenerationTool
     {
         //init 
         int[,] gridNeighbour = new int[gridWidth, gridHeight];
-
+        bool[,][] gridAccessNeighbour = new bool[gridWidth, gridHeight][];
         List<NeighbourNode> neighbourNodes = new List<NeighbourNode>();
         for (int y = 0; y < gridHeight; y++)
         {
             for (int x = 0; x < gridWidth; x++)
             {
-
                 Vector2Int pos = new Vector2Int(x, y);
-
-                //Right update
-                if (x + 1 < gridWidth)
+                gridAccessNeighbour[x, y] = new bool[4];
+                for (int o = 0; o < neighBours.Length; o++)
                 {
-                    Vector2Int rightNeighBour = pos + new Vector2Int(1, 0);
-                    if (!IsCoordEmpty(rightNeighBour))
-                        gridNeighbour[x, y]++;
+                    if (x + 1 < gridWidth && x - 1 >= 0 && y + 1 < gridHeight && y - 1 >= 0)
+                    {
+                        gridAccessNeighbour[x, y][o] = !IsCoordEmpty(pos + neighBours[o]);
+                        if (gridAccessNeighbour[x, y][o])
+                            gridNeighbour[x, y]++;
+                    }
                 }
-
-                //Left update
-                if (x - 1 >= 0)
-                {
-                    Vector2Int leftNeighBour = pos + new Vector2Int(-1, 0);
-                    if (!IsCoordEmpty(leftNeighBour))
-                        gridNeighbour[x, y]++;
-                }
-
-                //Top update
-                if (y + 1 < gridHeight)
-                {
-                    Vector2Int topNeighBour = pos + new Vector2Int(0, 1);
-                    if (!IsCoordEmpty(topNeighBour))
-                        gridNeighbour[x, y]++;
-                }
-
-                //Bottom update
-                if (y - 1 >= 0)
-                {
-                    Vector2Int bottomNeighBour = pos + new Vector2Int(0, -1);
-                    if (!IsCoordEmpty(bottomNeighBour))
-                        gridNeighbour[x, y]++;
-                }
-                neighbourNodes.Add(new NeighbourNode { position = new Vector2Int(x, y), score = gridNeighbour[x, y] });
+                neighbourNodes.Add(new NeighbourNode { position = new Vector2Int(x, y), score = gridNeighbour[x, y], access = gridAccessNeighbour[x, y] });
             }
         }
 
         neighbourNodes = neighbourNodes.Where(node => IsCoordEmpty(node.position)).OrderByDescending(node => node.score).ToList();
-        for (int i = 0; i < secretNodeCount; i++)
+        int i = 0;
+        int k = 0;
+        while(i < secretNodeCount)
         {
-            Noeud node = new Noeud(neighbourNodes[i].position, Noeud.TYPE_DE_NOEUD.SECRET);
-            grid[neighbourNodes[i].position.x,
-                neighbourNodes[i].position.y] = i;
+            Noeud node = new Noeud(neighbourNodes[k].position, Noeud.TYPE_DE_NOEUD.SECRET);
             nodes.Add(node);
+            grid[neighbourNodes[k].position.x,
+                neighbourNodes[k].position.y] = i;
+            List<int> valideNeighbour = new List<int>();
+            for (int j = 0; j < neighbourNodes[k].access.Length; j++)
+            {
+                if (neighbourNodes[k].access[j])
+                {
+                    int nodeIndex = GetNodeIndexFromPos(neighbourNodes[k].position + neighBours[j]);
+                    if (nodes[nodeIndex].type != Noeud.TYPE_DE_NOEUD.END)
+                        valideNeighbour.Add(nodeIndex);
+                }
+            }
+            if(valideNeighbour.Count > 0)
+            {
+                int selectedIndex = valideNeighbour[Random.Range(0, valideNeighbour.Count)];
+                node.liens.Add(selectedIndex, Noeud.TYPE_DE_LIEN.SECRET);
+                nodes[selectedIndex].liens.Add(nodes.Count - 1, Noeud.TYPE_DE_LIEN.SECRET);
+                i++;
+            }
+            k++;
         }
     }
 
@@ -133,6 +136,7 @@ public static class GraphGenerationTool
         }
         return true;
     }
+
     #region Path
 
     private static bool GeneratePath(int rootNode, int pathLength)
@@ -186,8 +190,20 @@ public static class GraphGenerationTool
     private static Vector2Int NewDirection(Vector2Int position, Vector2Int previousDirection)
     {
         Vector2 direction = Vector2.zero;
-        bool top, right, bottom, left;
-
+        bool[] neighboursIsEmpty = new bool[4];
+        for (int i = 0; i < neighboursIsEmpty.Length; i++)
+        {
+            neighboursIsEmpty[i] = IsCoordEmpty(position + neighBours[i]);
+        } 
+        if (!neighboursIsEmpty[0] &&
+            !neighboursIsEmpty[1] &&
+            !neighboursIsEmpty[2] &&
+            !neighboursIsEmpty[3])
+            return Vector2Int.zero;
+        else
+            return GenerateNewDirection(neighboursIsEmpty);
+        /*
+        //bool top, right, bottom, left;
         //  RIGHT
         Vector2Int rightNeighBour = position + new Vector2Int(1, 0);
         if (!IsCoordEmpty(rightNeighBour) ||
@@ -219,31 +235,31 @@ public static class GraphGenerationTool
             bottom = false;
         else
             bottom = true;
-
         // if no available direction return no direction
         if (!top && !right && !bottom && !left)
             return Vector2Int.zero;
         else
             return GenerateNewDirection(top, right, bottom, left);
+        */
     }
 
-    private static Vector2Int GenerateNewDirection(bool top, bool right, bool bottom, bool left)
+    private static Vector2Int GenerateNewDirection(bool[] neighbours)
     {
         Vector2Int direction = Vector2Int.zero;
-        if (right && left)
+        if (neighbours[0] && neighbours[1])
             direction.x = Random.Range(0, 2) == 1 ? 1 : -1;
-        else if (right)
+        else if (neighbours[0])
             direction.x = 1;
-        else if (left)
+        else if (neighbours[1])
             direction.x = -1;
         else
             direction.x = 0;
 
-        if (top && bottom)
+        if (neighbours[2] && neighbours[3])
             direction.y = Random.Range(0, 2) == 1 ? 1 : -1;
-        else if (top)
+        else if (neighbours[2])
             direction.y = 1;
-        else if (bottom)
+        else if (neighbours[3])
             direction.y = -1;
         else
             direction.y = 0;
