@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class RoomSettings : MonoBehaviour
 {
-    public enum DANGERORITY
+    public enum DANGEROSITY
     {
         EASY,
         INTERMEDIATE,
         DIFFICULT,
     }
     public Noeud.TYPE_DE_NOEUD type = Noeud.TYPE_DE_NOEUD.INTERMEDIATE;
-    public DANGERORITY dangerosity= DANGERORITY.EASY;
+    public DANGEROSITY dangerosity= DANGEROSITY.EASY;
     private Door doorUp;
     private Door doorDown;
     private Door doorLeft;

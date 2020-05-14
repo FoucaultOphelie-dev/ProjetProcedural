@@ -22,6 +22,8 @@ public class Noeud
     };
 
     public TYPE_DE_NOEUD type;
+    public RoomSettings.DANGEROSITY dangerosity;
+    public float dangerosityValue;
     public GameObject sallePrefab;
     public Vector2Int position;
     public Dictionary<int, TYPE_DE_LIEN> liens;

@@ -52,6 +52,7 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
             nodes[i].position = nodes[i].position - nodes[0].position;
         }
         nodes[0].position = Vector2Int.zero;
+
         return nodes.ToArray();
     }
 

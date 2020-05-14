@@ -2,12 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 [ExecuteAlways]
 public class GraphViewer : MonoBehaviour
 {
+    public enum DebugColorMode
+    {
+        Type,
+        Dangerosity
+    }
+    public DebugColorMode debugColorMode;
     public GraphSetting currentSetting;
-    public GameObject roomPrefabs;
+    public RoomsDatabase roomsPrefabs;
+    public DifficultySetting difficultySetting;
+    public bool showDangerosityValue;
     public Vector2 roomSize;
     public int iterationMax = 1;
     [Range(0f,1f)]
@@ -30,30 +40,26 @@ public class GraphViewer : MonoBehaviour
         //Draw Node
         foreach(Noeud node in currentGraph)
         {
-            switch (node.type)
+            switch (debugColorMode)
             {
-                case Noeud.TYPE_DE_NOEUD.START:
-                    Gizmos.color = Color.green;
+                case DebugColorMode.Type:
+                    Gizmos.color = GetRoomColorByType(node.type);
                     break;
-                case Noeud.TYPE_DE_NOEUD.END:
-                    Gizmos.color = Color.red;
-                    break;
-                case Noeud.TYPE_DE_NOEUD.KEY:
-                    Gizmos.color = Color.yellow;
-                    break;
-                case Noeud.TYPE_DE_NOEUD.OBSTACLE:
-                    Gizmos.color = Color.cyan;
-                    break;
-                case Noeud.TYPE_DE_NOEUD.INTERMEDIATE:
-                    Gizmos.color = Color.white;
-                    break;
-                case Noeud.TYPE_DE_NOEUD.SECRET:
-                    Gizmos.color = Color.magenta;
+                case DebugColorMode.Dangerosity:
+                    Gizmos.color = GetRoomColorByDangerosity(node.dangerosity);
                     break;
                 default:
                     break;
             }
-            Gizmos.DrawCube((Vector2)node.position * roomSize, roomSize);
+            if (!showDangerosityValue)
+                Gizmos.DrawCube((Vector2)node.position * roomSize, roomSize);
+#if UNITY_EDITOR
+            if (showDangerosityValue)
+            {
+                Handles.DrawWireCube((Vector2)node.position * roomSize, roomSize);
+                Handles.Label((Vector2)node.position * roomSize, node.dangerosityValue.ToString());
+            }
+#endif
 
             //Draw Link
             foreach (KeyValuePair<int, Noeud.TYPE_DE_LIEN> lien in node.liens)
@@ -121,17 +127,51 @@ public class GraphViewer : MonoBehaviour
             //Camera.main.transform.position = new Vector3(gridWidth / 2, gridHeight / 2, -10);
             i++;
         } while (currentGraph == null && i < iterationMax);
-        if (currentGraph != null && roomPrefabs != null)
-        {
-            foreach(Noeud node in currentGraph)
-            {
-                Instantiate(roomPrefabs, (node.position * roomSize) - roomSize/2, Quaternion.identity, transform);
-            }
-        }
-        else
+        if (currentGraph == null)
         {
             Debug.LogError("Damn we are in trouble ...");
         }
+        else
+        {
+            currentGraph = GenerateDifficultyTool.GenerateDifficultyValue(difficultySetting, currentGraph);
+            currentGraph = DungeonGenerationTool.GenerateDungeon(difficultySetting, currentGraph, new List<GameObject>());
+        }
         Debug.Log(System.Math.Round((Time.realtimeSinceStartup - starttime) * 1000, 2) + "ms (try:" + i + ")");
+    }
+
+    private Color GetRoomColorByType(Noeud.TYPE_DE_NOEUD type)
+    {
+        switch (type)
+        {
+            case Noeud.TYPE_DE_NOEUD.START:
+                return Color.green;
+            case Noeud.TYPE_DE_NOEUD.END:
+                return Color.red;
+            case Noeud.TYPE_DE_NOEUD.KEY:
+                return Color.yellow;
+            case Noeud.TYPE_DE_NOEUD.OBSTACLE:
+                return Color.cyan;
+            case Noeud.TYPE_DE_NOEUD.INTERMEDIATE:
+                return Color.white;
+            case Noeud.TYPE_DE_NOEUD.SECRET:
+                return Color.magenta;
+            default:
+                return Color.white;
+        }
+    }
+
+    private Color GetRoomColorByDangerosity(RoomSettings.DANGEROSITY dangerosity)
+    {
+        switch (dangerosity)
+        {
+            case RoomSettings.DANGEROSITY.EASY:
+                return Color.green;
+            case RoomSettings.DANGEROSITY.INTERMEDIATE:
+                return new Color(255, 165, 0);
+            case RoomSettings.DANGEROSITY.DIFFICULT:
+                return Color.red;
+            default:
+                return Color.white;
+        }
     }
 }

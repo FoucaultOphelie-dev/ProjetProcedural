@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newDifficultySetting", menuName = "New Difficulty Setting")]
-public class DificultySetting : ScriptableObject
+public class DifficultySetting : ScriptableObject
 {
     public AnimationCurve courbeDeDifficulte;
     public AnimationCurve courbeEasy;
