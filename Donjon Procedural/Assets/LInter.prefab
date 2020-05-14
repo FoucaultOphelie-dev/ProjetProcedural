@@ -996,6 +996,21 @@ PrefabInstance:
       propertyPath: obligations
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4420426639264757958, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: obligations
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4420426639740921847, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: obligations
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4420426639972901452, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: obligations
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 220972410103612474, guid: 14bad1f5ceaca9c47841269661fd90e4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 14bad1f5ceaca9c47841269661fd90e4, type: 3}
