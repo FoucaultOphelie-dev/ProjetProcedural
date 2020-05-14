@@ -249,9 +249,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 372cfc6c451572d448c48c4ca7961d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugColorMode: 1
-  currentSetting: {fileID: 11400000, guid: 67a36657c33cbb94e945570e1b5ba359, type: 2}
-  roomsPrefabs: {fileID: 0}
+  debugColorMode: 0
+  currentSetting: {fileID: 11400000, guid: 9c232302c8c5e4d4fae642fa2c4687bb, type: 2}
+  roomsPrefabs: {fileID: 11400000, guid: 3c1abbf43f6e16a4691dc8156b7ae4df, type: 2}
   difficultySetting: {fileID: 11400000, guid: 9fdfb52d7b921934888a00714fdeff3f, type: 2}
   showDangerosityValue: 0
   roomSize: {x: 11, y: 9}
@@ -265,13 +265,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313090311}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.11982562, y: -0, z: -0, w: 0.992795}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -13.764001, y: 0, z: 0}
 --- !u!1 &1505496377 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3061304262239656675, guid: 3e99f044c283cd440bd8fee09c5090db,
