@@ -40,18 +40,18 @@ public static class GenerateDifficultyTool
             criticalPathLength++;
         }
         criticalPathLength++;
-        gap = 1f / criticalPathLength;
-
-        for (float i = 0; i < 1; i += gap)
+        float dangerosityStep = 1f / criticalPathLength;
+        for (int i = 0; i < criticalPathLength; i++)
         {
-            listOfDifficulty.Add(difficultySetting.courbeDeDifficulte.Evaluate(i));
+            listOfDifficulty.Add(difficultySetting.courbeDeDifficulte.Evaluate(gap));
+            gap += dangerosityStep;
         }
 
         for (int i = criticalPathLength; i < graph.Length; i++)
         {
             foreach (int key in graph[i].liens.Keys)
             {
-                if (key != i+1)
+                if (key < i)
                 {
                     listOfDifficulty.Add(listOfDifficulty[key]);
                     break;

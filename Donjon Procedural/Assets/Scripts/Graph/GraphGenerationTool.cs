@@ -32,7 +32,7 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
 
         //Critical Path Generation
         int criticalpathLength = Random.Range(setting.criticalPathLength.x, setting.criticalPathLength.y+1);
-        bool result = GeneratePath(0, criticalpathLength);
+        bool result = GeneratePath(0, criticalpathLength-1);
         if (!result)
             return null;
         nodes[nodes.Count - 1].type = Noeud.TYPE_DE_NOEUD.END;
