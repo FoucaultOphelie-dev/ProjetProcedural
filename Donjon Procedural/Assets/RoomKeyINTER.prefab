@@ -21,7 +21,7 @@ EdgeCollider2D:
   - {x: 5, y: 4}
   - {x: 5, y: 3}
   - {x: 4, y: 3}
---- !u!68 &3357804637772103137
+--- !u!68 &2927605023758948593
 EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ EdgeCollider2D:
   - {x: 7, y: 4}
   - {x: 7, y: 3}
   - {x: 6, y: 3}
---- !u!68 &8032573299153414689
+--- !u!68 &3357804637772103137
 EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,7 +65,7 @@ EdgeCollider2D:
   - {x: 5, y: 9}
   - {x: 5, y: 8}
   - {x: 1, y: 8}
---- !u!68 &8156481322061571193
+--- !u!68 &7520164804450872321
 EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,7 @@ EdgeCollider2D:
   - {x: 5, y: 6}
   - {x: 5, y: 5}
   - {x: 4, y: 5}
---- !u!68 &7520164804450872321
+--- !u!68 &8032573299153414689
 EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,7 +107,7 @@ EdgeCollider2D:
   - {x: 7, y: 6}
   - {x: 7, y: 5}
   - {x: 6, y: 5}
---- !u!68 &2927605023758948593
+--- !u!68 &8156481322061571193
 EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -371,10 +371,20 @@ PrefabInstance:
       propertyPath: m_parentTilemapGroup
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 220972408990723457, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 220972408990723457, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: dangerosity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 220972408990723460, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: m_Name
-      value: RoomKey
+      value: RoomKeyINTER
       objectReference: {fileID: 0}
     - target: {fileID: 220972408990723463, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
