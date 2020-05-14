@@ -123,7 +123,7 @@ MonoBehaviour:
       offsetMode: 0
       showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 1
-    obj: {fileID: 3779872584074282972}
+    obj: {fileID: 375658390288646974}
   - tilePos: 243
     tilePrefabData:
       prefab: {fileID: 3549493217134151225, guid: 0780f9ab35493b1439b12cdc29623023,
@@ -133,7 +133,7 @@ MonoBehaviour:
       offsetMode: 0
       showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 1
-    obj: {fileID: 5962589936428317567}
+    obj: {fileID: 7204926742204546973}
 --- !u!68 &4532003471478940102
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -295,7 +295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0780f9ab35493b1439b12cdc29623023, type: 3}
---- !u!1 &3779872584074282972 stripped
+--- !u!1 &375658390288646974 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3549493217134151225, guid: 0780f9ab35493b1439b12cdc29623023,
     type: 3}
@@ -327,6 +327,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RoomDoubleBossHARD
+      objectReference: {fileID: 0}
+    - target: {fileID: 220972408990723461, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: isStartRoom
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 220972408990723462, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
@@ -1885,7 +1890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0780f9ab35493b1439b12cdc29623023, type: 3}
---- !u!1 &5962589936428317567 stripped
+--- !u!1 &7204926742204546973 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3549493217134151225, guid: 0780f9ab35493b1439b12cdc29623023,
     type: 3}

@@ -124,6 +124,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room8SpikeVerticalEasy
       objectReference: {fileID: 0}
+    - target: {fileID: 220972408990723461, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: isStartRoom
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 220972408990723463, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: m_LocalPosition.x
