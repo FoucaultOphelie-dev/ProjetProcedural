@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TestCritere : MonoBehaviour
 {
-    int critere1 = 0x1000;
+    int critere1 = 0x4000;
     int critere2 = 0x0100;
-    int critere3 = 0x0040;
+    int critere3 = 0x0010;
     int critere4 = 0x0004;
 
-    int roomFlag = 0x0000;
+    int roomFlag = 0x1122;
     List<int> criteres;
     // Start is called before the first frame update
     void Start()
@@ -27,11 +27,5 @@ public class TestCritere : MonoBehaviour
 
 
         Debug.Log(result);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

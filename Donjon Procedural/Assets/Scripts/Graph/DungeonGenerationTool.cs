@@ -37,21 +37,21 @@ public static class DungeonGenerationTool
                 }
                 if (graph[key].position.x < node.position.x)
                 {
-                    criteres[0] = 0x0100;
+                    criteres[1] = 0x0100;
                 }
                 if (graph[key].position.y > node.position.y)
                 {
-                    criteres[0] = 0x0010;
+                    criteres[2] = 0x0010;
                 }
                 if (graph[key].position.y < node.position.y)
                 {
-                    criteres[0] = 0x0001;
+                    criteres[3] = 0x0001;
                 }
             }
 
             foreach (GameObject go in dataBase)
             {
-                
+                RoomSettings GO = go.GetComponent<RoomSettings>();
                 bool result = true;
                 foreach (int critere in criteres)
                 {
