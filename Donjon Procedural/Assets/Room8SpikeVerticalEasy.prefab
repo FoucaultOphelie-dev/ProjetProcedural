@@ -113,11 +113,11 @@ PrefabInstance:
         type: 3}
       propertyPath: doorUp
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3366148730297436368}
     - target: {fileID: 220972408990723457, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: roomFlag
-      value: 8740
+      value: 8772
       objectReference: {fileID: 0}
     - target: {fileID: 220972408990723460, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
@@ -712,6 +712,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1436213923803097756}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3366148730297436368 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4420426639972901452, guid: 14bad1f5ceaca9c47841269661fd90e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1436213923803097756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713f1094d6bc49a4d93b8279be3707bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3045137378833983202
 PrefabInstance:
   m_ObjectHideFlags: 0

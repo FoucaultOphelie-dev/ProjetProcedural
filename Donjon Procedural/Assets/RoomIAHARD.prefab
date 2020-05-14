@@ -46,6 +46,27 @@ EdgeCollider2D:
   - {x: 4, y: 3}
   - {x: 4, y: 2}
   - {x: 3, y: 2}
+--- !u!68 &731740859421690344
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224831524451626657}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 7, y: 6}
+  - {x: 7, y: 7}
+  - {x: 8, y: 7}
+  - {x: 8, y: 6}
+  - {x: 7, y: 6}
 --- !u!68 &1175765058360212141
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -218,27 +239,6 @@ EdgeCollider2D:
   - {x: 4, y: 7}
   - {x: 4, y: 6}
   - {x: 3, y: 6}
---- !u!68 &731740859421690344
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1224831524451626657}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: 7, y: 6}
-  - {x: 7, y: 7}
-  - {x: 8, y: 7}
-  - {x: 8, y: 6}
-  - {x: 7, y: 6}
 --- !u!1001 &193244914622809322
 PrefabInstance:
   m_ObjectHideFlags: 0
