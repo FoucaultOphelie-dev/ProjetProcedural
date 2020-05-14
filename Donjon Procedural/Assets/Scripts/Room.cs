@@ -12,10 +12,14 @@ public class Room : MonoBehaviour {
 
 	public static List<Room> allRooms = new List<Room>();
 
+    private List<Color> initialsColor;
+    private List<Color> initialsRendererColor;
+
     void Awake()
     {
 		_tilemapGroup = GetComponentInChildren<TilemapGroup>();
 		allRooms.Add(this);
+        
 	}
 
 	private void OnDestroy()
@@ -24,6 +28,21 @@ public class Room : MonoBehaviour {
 	}
 
 	void Start () {
+        if(gameObject.GetComponent<RoomSettings>().type == Noeud.TYPE_DE_NOEUD.SECRET)
+        {
+            initialsColor = new List<Color>();
+            foreach (STETilemap Tilemap in this.gameObject.GetComponentsInChildren<STETilemap>())
+            {
+                initialsColor.Add(Tilemap.TintColor);
+                Tilemap.TintColor = new Color(0,0,0,0);
+            }
+            initialsRendererColor = new List<Color>();
+            foreach(Renderer renderer in this.gameObject.GetComponentsInChildren<Renderer>())
+            {
+                initialsRendererColor.Add(renderer.material.color);
+                renderer.material.color = new Color(0, 0, 0, 0);
+            }
+        }
         if(isStartRoom)
         {
             OnEnterRoom();
@@ -35,7 +54,22 @@ public class Room : MonoBehaviour {
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
         Bounds cameraBounds = _GetWorldRoomBounds();
         cameraFollow.SetBounds(cameraBounds);
-		//Player.Instance.EnterRoom(this);
+		Player.Instance.EnterRoom(this);
+        if (gameObject.GetComponent<RoomSettings>().type == Noeud.TYPE_DE_NOEUD.SECRET)
+        {
+            int i = 0;
+            foreach (STETilemap Tilemap in this.gameObject.GetComponentsInChildren<STETilemap>())
+            {
+                Tilemap.TintColor = initialsColor[i];
+                i++;
+            }
+            i = 0;
+            foreach (Renderer renderer in this.gameObject.GetComponentsInChildren<Renderer>())
+            {
+                renderer.material.color = initialsRendererColor[i];
+                i++;
+            }
+        }
     }
 
 
