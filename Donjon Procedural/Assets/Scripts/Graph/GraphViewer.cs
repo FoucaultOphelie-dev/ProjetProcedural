@@ -25,14 +25,13 @@ public class GraphViewer : MonoBehaviour
     public bool loopGeneration;
     private float timer = 0f;
     [HideInInspector] public Noeud[] currentGraph = null;
+    /*
     private void Start()
     {
-        if(currentGraph != null)
-        {
-            DeleteGraph();
-        }
+        DeleteGraph();
         GenerateDungeon();
     }
+    */
 
     private void OnDrawGizmos()
     {
@@ -52,7 +51,7 @@ public class GraphViewer : MonoBehaviour
                     break;
             }
             if (!showDangerosityValue)
-                Gizmos.DrawCube((Vector2)node.position * roomSize, roomSize);
+                Gizmos.DrawCube((Vector2)node.position * roomSize, roomSize - new Vector2Int(1,1));
 #if UNITY_EDITOR
             if (showDangerosityValue)
             {
@@ -127,6 +126,7 @@ public class GraphViewer : MonoBehaviour
             //Camera.main.transform.position = new Vector3(gridWidth / 2, gridHeight / 2, -10);
             i++;
         } while (currentGraph == null && i < iterationMax);
+        float generationTime = Time.realtimeSinceStartup - starttime;
         if (currentGraph == null)
         {
             Debug.LogError("Damn we are in trouble ...");
@@ -135,7 +135,10 @@ public class GraphViewer : MonoBehaviour
         {   
             currentGraph = DungeonGenerationTool.GenerateDungeon(difficultySetting, roomSize, currentGraph, roomsPrefabs.rooms.ToArray(), transform);
         }
-        //Debug.Log(System.Math.Round((Time.realtimeSinceStartup - starttime) * 1000, 2) + "ms (try:" + i + ")");
+        Debug.Log(
+            "Graph Generation: " + System.Math.Round(generationTime * 1000, 2) + "ms" + "(try:" + i + ")\n" +
+            "Dungeon Instantiation: " + System.Math.Round(((Time.realtimeSinceStartup - starttime) - generationTime) * 1000, 2) + "ms\n" +
+            "Dungeon Generation: " + System.Math.Round((Time.realtimeSinceStartup - starttime) * 1000, 2) + "ms\n");
     }
 
     private Color GetRoomColorByType(Noeud.TYPE_DE_NOEUD type)

@@ -32,7 +32,7 @@ public class RoomSettings : MonoBehaviour
         listDoor = GetComponentsInChildren<Door>();
         foreach (Door door in listDoor)
         {
-            if (door.gameObject.transform.localRotation.z == 0)
+            if (door.gameObject.transform.localRotation.eulerAngles.z == 0)
             {
                 doorUp = door;
             }

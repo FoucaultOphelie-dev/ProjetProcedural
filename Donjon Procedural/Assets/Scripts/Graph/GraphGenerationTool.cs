@@ -13,6 +13,7 @@ public static class GraphGenerationTool
 {
     private static List<Noeud> nodes = new List<Noeud>();
     private static int[,] grid = null;
+    private static int criticalpathLength;
     private static int gridWidth = -1;
     private static int gridHeight = -1;
     private readonly static Vector2Int[] neighBours = new Vector2Int[4] { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down } ;
@@ -32,7 +33,7 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
         nodes.Add(rootNode);
 
         //Critical Path Generation
-        int criticalpathLength = Random.Range(setting.criticalPathLength.x, setting.criticalPathLength.y+1);
+        criticalpathLength = Random.Range(setting.criticalPathLength.x, setting.criticalPathLength.y+1);
         bool result = GeneratePath(0, criticalpathLength-1);
         if (!result)
             return null;
@@ -45,7 +46,19 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
         if (!obstacles)
             return null;
 
-        GenerateSecretNode(Random.Range(setting.secretNode.x, setting.secretNode.y + 1));
+        switch (setting.secretRoomPositionningMode)
+        {
+            case GraphSetting.SecretRoomPositionningMode.MostNeighbour:
+                GenerateSecretNodeMostNeighbour(Random.Range(setting.secretNode.x, setting.secretNode.y + 1));
+                break;
+            case GraphSetting.SecretRoomPositionningMode.NextToLastKey:
+                bool resultGeneration = GenerateSecretNodeNextToLastKey();
+                if (!resultGeneration)
+                    return null;
+                break;
+            default:
+                break;
+        }
 
         //Set graph at origin
         for (int i = 1; i < nodes.Count; i++)
@@ -57,31 +70,44 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
         return nodes.ToArray();
     }
 
-    private static void GenerateSecretNode(int secretNodeCount)
+    private static bool GenerateSecretNodeNextToLastKey()
     {
-        /*
-        List<Noeud> keys = new List<Noeud>();
-        foreach (Noeud node in nodes)
+        //Get Last Obstacle
+        int i = criticalpathLength - 1;
+        while(i > 0 && nodes[i].type != Noeud.TYPE_DE_NOEUD.OBSTACLE)
         {
-            if(node.type== Noeud.TYPE_DE_NOEUD.KEY)
-            {
-                keys.Add(node);
-            }
+            i--;
         }
-        if (secretNodeCount < keys.Count)
+        //Debug.Log(nodes[i].type);
+        if (i > 0)
         {
-            for (int j = 0; j < secretNodeCount; j++)
+            i = nodes[i].liens.First(lien => lien.Key != i + 1 && lien.Key != i - 1).Key;
+            while (nodes[i].liens.ContainsKey(i + 1))
+                i++;
+            Debug.Log(nodes[i].type);
+            Vector2Int secretRoomDirection = NewDirection(nodes[i].position, nodes[i].position - nodes[i - 1].position);
+            if(secretRoomDirection != Vector2Int.zero)
             {
-                Noeud node = Random.Range()
+                Noeud secretNode = new Noeud(nodes[i].position + secretRoomDirection, Noeud.TYPE_DE_NOEUD.SECRET);
+                nodes[i].liens.Add(nodes.Count, Noeud.TYPE_DE_LIEN.SECRET);
+                secretNode.liens.Add(i, Noeud.TYPE_DE_LIEN.SECRET);
+                nodes.Add(secretNode);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         else
         {
-
+            Debug.LogError("Obstacle not found on critical path by secretroom");
+            return false;
         }
-        */
+    }
 
-
+    private static void GenerateSecretNodeMostNeighbour(int secretNodeCount)
+    {
         //init 
         int[,] gridNeighbour = new int[gridWidth, gridHeight];
         bool[,][] gridAccessNeighbour = new bool[gridWidth, gridHeight][];

@@ -18,3 +18,4 @@ MonoBehaviour:
   obstacleCount: {x: 1, y: 2}
   secondaryPathLength: {x: 4, y: 5}
   secretNode: {x: 1, y: 1}
+  secretRoomPositionningMode: 1
