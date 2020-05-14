@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridWidth: {x: 26, y: 30}
   gridHeight: {x: 6, y: 10}
-  criticalPathLength: {x: 10, y: 12}
+  criticalPathLength: {x: 8, y: 12}
   obstacleCount: {x: 1, y: 2}
-  secondaryPathLength: {x: 2, y: 5}
+  secondaryPathLength: {x: 4, y: 5}
   secretNode: {x: 1, y: 1}
   secretRoomPositionningMode: 1

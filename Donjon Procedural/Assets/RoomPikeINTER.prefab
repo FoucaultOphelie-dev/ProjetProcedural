@@ -247,6 +247,11 @@ PrefabInstance:
       propertyPath: dangerosity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 220972408990723457, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: roomFlag
+      value: 4420
+      objectReference: {fileID: 0}
     - target: {fileID: 220972408990723460, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: m_Name
