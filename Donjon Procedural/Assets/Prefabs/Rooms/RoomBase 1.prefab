@@ -154,7 +154,7 @@ MonoBehaviour:
   - {fileID: 220972408868948236}
   m_selectedIndex: 0
   m_unselectedColorMultiplier: 1
-  m_defaultTilemapWindowVisible: 0
+  m_defaultTilemapWindowVisible: 1
   m_displayTilemapRList: 1
   m_savedTileIds: 
   m_savedTileDefaultTilemaps: []
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd64e0034f05b44581a553bb498242e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStartRoom: 1
+  isStartRoom: 0
   position: {x: 0, y: 0}
 --- !u!50 &220972408990723456
 Rigidbody2D:

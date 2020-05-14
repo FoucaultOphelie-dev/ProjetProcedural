@@ -78,13 +78,13 @@ public static Noeud[] GenerateGraph(GraphSetting setting)
         {
             i--;
         }
-        //Debug.Log(nodes[i].type);
+
         if (i > 0)
         {
             i = nodes[i].liens.First(lien => lien.Key != i + 1 && lien.Key != i - 1).Key;
             while (nodes[i].liens.ContainsKey(i + 1))
                 i++;
-            Debug.Log(nodes[i].type);
+
             Vector2Int secretRoomDirection = NewDirection(nodes[i].position, nodes[i].position - nodes[i - 1].position);
             if(secretRoomDirection != Vector2Int.zero)
             {
