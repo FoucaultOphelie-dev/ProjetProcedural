@@ -4,27 +4,19 @@ using UnityEngine;
 
 public static class GenerateDifficultyTool
 {
-    public static Noeud[] GenerateDifficultyValue(DifficultySetting difficultySetting, Noeud[] graph)
-    {
-        List<float> nodeDifficultyValue = GenerateListNumberDificulty(difficultySetting, graph);
-        for (int i = 0; i < graph.Length; i++)
-        {
-            graph[i].dangerosityValue = nodeDifficultyValue[i];
-        }
-        return graph;
-    }
 
     public static List<RoomSettings.DANGEROSITY> GenerateDifficulty(DifficultySetting difficultySetting, Noeud[] graph)
     {
         List<float> listOfDifficulty = GenerateListNumberDificulty(difficultySetting, graph);
         List<RoomSettings.DANGEROSITY> difficulty = new List<RoomSettings.DANGEROSITY>();
-
-        foreach (float dif in listOfDifficulty)
+        
+        for (int i = 0; i < listOfDifficulty.Count; i++)
         {
+            graph[i].dangerosityValue = listOfDifficulty[i];
             difficulty.Add(randomStat(
-                difficultySetting.courbeEasy.Evaluate(dif),
-                difficultySetting.courbeIntermediate.Evaluate(dif),
-                difficultySetting.courbeDificult.Evaluate(dif)));
+                difficultySetting.courbeEasy.Evaluate(listOfDifficulty[i]),
+                difficultySetting.courbeIntermediate.Evaluate(listOfDifficulty[i]),
+                difficultySetting.courbeDificult.Evaluate(listOfDifficulty[i])));
         }
         
         return difficulty;
@@ -32,21 +24,25 @@ public static class GenerateDifficultyTool
 
     private static List<float> GenerateListNumberDificulty(DifficultySetting difficultySetting, Noeud[] graph)
     {
+        //CRITICAL PATH LENGTH
         int criticalPathLength = 0;
-        float gap = 0;
         List<float> listOfDifficulty = new List<float>();
         for (int i = 0; graph[i].type != Noeud.TYPE_DE_NOEUD.END; i++)
         {
             criticalPathLength++;
         }
         criticalPathLength++;
+
+        //CRITICAL PATH DANGEROSITY
+        float dangerosityTotal = 0;
         float dangerosityStep = 1f / criticalPathLength;
         for (int i = 0; i < criticalPathLength; i++)
         {
-            listOfDifficulty.Add(difficultySetting.courbeDeDifficulte.Evaluate(gap));
-            gap += dangerosityStep;
+            listOfDifficulty.Add(difficultySetting.courbeDeDifficulte.Evaluate(dangerosityTotal));
+            dangerosityTotal += dangerosityStep;
         }
 
+        //SECONDARY PATH DANGEROSITY
         for (int i = criticalPathLength; i < graph.Length; i++)
         {
             foreach (int key in graph[i].liens.Keys)

@@ -132,8 +132,7 @@ public class GraphViewer : MonoBehaviour
             Debug.LogError("Damn we are in trouble ...");
         }
         else
-        {
-            currentGraph = GenerateDifficultyTool.GenerateDifficultyValue(difficultySetting, currentGraph);
+        {   
             currentGraph = DungeonGenerationTool.GenerateDungeon(difficultySetting, currentGraph, new List<GameObject>());
         }
         Debug.Log(System.Math.Round((Time.realtimeSinceStartup - starttime) * 1000, 2) + "ms (try:" + i + ")");
