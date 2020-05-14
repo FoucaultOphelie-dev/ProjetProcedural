@@ -5,18 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="newGraphSetting", menuName ="New Graph Setting")]
 public class GraphSetting : ScriptableObject
 {
-    /*
-    public int gridWidthMin;
-    public int gridWidthMax;
-    public int gridHeightMin;
-    public int gridHeightMax;
-    public int criticalPathLengthMin;
-    public int criticalPathLengthMax;
-    public int obstacleCountMin;
-    public int obstacleCountMax;
-    public int secondaryPathLengthMin;
-    public int secondaryPathLengthMax;
-    */
+    public enum SecretRoomPositionningMode
+    {
+        MostNeighbour,
+        NextToLastKey
+    }
+
     [MinMaxSlider(3,30)]
     public Vector2Int gridWidth;
     [MinMaxSlider(3, 30)]
@@ -29,5 +23,6 @@ public class GraphSetting : ScriptableObject
     public Vector2Int secondaryPathLength;
     [MinMaxSlider(0, 3)]
     public Vector2Int secretNode;
+    public SecretRoomPositionningMode secretRoomPositionningMode;
 
 }
