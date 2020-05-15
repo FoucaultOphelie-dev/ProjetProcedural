@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TestCritere : MonoBehaviour
 {
+    public Player player;
+    public Camera camera;
     int critere1 = 0x4000;
     int critere2 = 0x0100;
     int critere3 = 0x0010;
@@ -26,6 +29,30 @@ public class TestCritere : MonoBehaviour
         }
 
 
-        Debug.Log(result);
+        //Debug.Log(result);
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            player.life = 100; 
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (camera.orthographicSize != 50)
+            {
+                camera.orthographicSize = 50;
+            }
+            else
+            {
+                camera.orthographicSize = 5;
+            }
+        }
     }
 }
