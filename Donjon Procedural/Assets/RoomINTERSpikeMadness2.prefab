@@ -383,6 +383,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoomINTERSpikeMadness2
       objectReference: {fileID: 0}
+    - target: {fileID: 220972408990723460, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 220972408990723461, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: isStartRoom

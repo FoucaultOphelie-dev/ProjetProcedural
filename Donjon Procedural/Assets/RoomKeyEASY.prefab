@@ -113,7 +113,7 @@ MonoBehaviour:
       offsetMode: 0
       showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 1
-    obj: {fileID: 1463613739999571453}
+    obj: {fileID: 9185054915665627376}
 --- !u!68 &1417960489466079994
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -851,7 +851,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_tileObjList.Array.data[3].obj
       value: 
-      objectReference: {fileID: 2881260056925865235}
+      objectReference: {fileID: 5531644067465404446}
     - target: {fileID: 4420426638798340685, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: obligations
@@ -974,7 +974,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcbf71ad5aaed2c478c8064b1d756a1c, type: 3}
---- !u!1 &1463613739999571453 stripped
+--- !u!1 &9185054915665627376 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7725945197443063864, guid: fcbf71ad5aaed2c478c8064b1d756a1c,
     type: 3}
@@ -1049,7 +1049,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcbf71ad5aaed2c478c8064b1d756a1c, type: 3}
---- !u!1 &2881260056925865235 stripped
+--- !u!1 &5531644067465404446 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7725945197443063864, guid: fcbf71ad5aaed2c478c8064b1d756a1c,
     type: 3}

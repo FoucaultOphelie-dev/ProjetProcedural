@@ -1137,6 +1137,26 @@ PrefabInstance:
       propertyPath: m_Points.Array.data[8].x
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 3720334359528063502, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3720334359998937221, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3720334361033660548, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3720334361203776831, guid: 14bad1f5ceaca9c47841269661fd90e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4420426638798340685, guid: 14bad1f5ceaca9c47841269661fd90e4,
         type: 3}
       propertyPath: obligations

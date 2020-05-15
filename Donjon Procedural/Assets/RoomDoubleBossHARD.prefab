@@ -123,7 +123,7 @@ MonoBehaviour:
       offsetMode: 0
       showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 1
-    obj: {fileID: 375658390288646973}
+    obj: {fileID: 3779872584074282972}
   - tilePos: 243
     tilePrefabData:
       prefab: {fileID: 3549493217134151225, guid: 0780f9ab35493b1439b12cdc29623023,
@@ -133,7 +133,7 @@ MonoBehaviour:
       offsetMode: 0
       showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 1
-    obj: {fileID: 7204926742204546974}
+    obj: {fileID: 5962589936428317567}
 --- !u!68 &4532003471478940102
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -295,7 +295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0780f9ab35493b1439b12cdc29623023, type: 3}
---- !u!1 &375658390288646973 stripped
+--- !u!1 &3779872584074282972 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3549493217134151225, guid: 0780f9ab35493b1439b12cdc29623023,
     type: 3}
@@ -1890,7 +1890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0780f9ab35493b1439b12cdc29623023, type: 3}
---- !u!1 &7204926742204546974 stripped
+--- !u!1 &5962589936428317567 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3549493217134151225, guid: 0780f9ab35493b1439b12cdc29623023,
     type: 3}
